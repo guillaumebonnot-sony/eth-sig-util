@@ -97,6 +97,10 @@ class TypedDataUtil {
   }
 
   static Uint8List hashTypedData(TypedMessage typedData, String version) {
+    return keccak256(prepareTypedData(typedData, version));
+  }
+
+  static Uint8List prepareTypedData(TypedMessage typedData, String version) {
     var parts = BytesBuffer();
     parts.add(hex.decode('1901'));
     parts.add(
@@ -105,7 +109,7 @@ class TypedDataUtil {
       parts.add(hashStruct(
           typedData.primaryType, typedData.message, typedData.types, version));
     }
-    return keccak256(parts.toBytes());
+    return parts.toBytes();
   }
 
   static Uint8List hashStruct(String primaryType, dynamic data,
